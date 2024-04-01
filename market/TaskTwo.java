@@ -4,6 +4,7 @@ import market.exceptions.ProductNotFoundException;
 import market.exceptions.QuantityIsNegativeException;
 import market.exceptions.UserNotFoudException;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class TaskTwo {
@@ -17,6 +18,7 @@ public class TaskTwo {
 
 //        buy(market, users.get(2), products.get(1), 15);
         buy(market, users.get(2), products.get(0), 2);
+        allQuantity(market, users.get(2), products.get(0), 2, DiscountModifier.WOMENDAY);
 
         System.out.println("===========================================");
         try {
@@ -27,7 +29,6 @@ public class TaskTwo {
     }
 
     public static void buy(Market market, User user, Product product, int quantity) {
-        int res = 0;
         try {
             int orderId = market.createOrder(user);
             market.addProductToOrder(orderId, product, quantity);
@@ -36,11 +37,25 @@ public class TaskTwo {
             System.out.println(e.getMessage());
         }
 
-        for (int i = 0; i <quantity ; i++) {
+    }
+    private static DecimalFormat df2 = new DecimalFormat("#.00");
+    public static void  allQuantity(Market market, User user, Product product, int quantity, DiscountModifier day) {
+//        int sale = day.getCode();
+
+    double res=0;
+        for (int i = 0; i < quantity; i++) {
             res += product.getPrice();
+            System.out.println(res);
+        }
+        switch (day){
+            case NULL -> System.out.println("The total amount of the order: " + df2.format(res));
+            case NEWYERS -> System.out.println("The total amount of the order: " + df2.format(res * day.getCode()));
+            case MENDAY -> System.out.println("The total amount of the order: " + df2.format(res * day.getCode()));
+            case WOMENDAY -> System.out.println("The total amount of the order: " + df2.format(res * day.getCode()));
 
         }
-        System.out.println("The total amount of the order: " + res);
-    }
 
+
+
+    }
 }
